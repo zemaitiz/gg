@@ -45,7 +45,6 @@ public class App {
                 System.out.println("Pasirinkite žaidimo tipą:");
                 System.out.println("I - infinite " + "|" + "T - time " + "|" + "P - perfect");
                 String mode = SCANNER.nextLine();
-
                 switch (mode) {
                     case "i":
                         startInifinityGame();
