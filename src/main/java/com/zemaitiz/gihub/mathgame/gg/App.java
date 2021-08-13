@@ -68,8 +68,6 @@ public class App {
     //todo kiekvienam skirtingam modui tureti atskira metoda - arba tureti viena metoda su parametrais
 
     //todo sugalvot veikiancia validacija, while true loopai pvz.
-
-
     public static void startInifinityGame() {
         System.out.println("Įrašykite, kiek klausimų norite atsakyti. Jei norite begalybės klausimų, įveskite b:");
         String answer = SCANNER.nextLine();
