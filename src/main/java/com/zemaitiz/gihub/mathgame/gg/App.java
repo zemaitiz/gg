@@ -21,53 +21,49 @@ public class App {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static int score;
 
+//todo ivedant varda, tikrinti, ar toks useris jau egzistuoja
+    //todo pasidaryt db, kuri neisnyktu aplikacijai issijungus - tikrinsime, ar toks useris egzistuoja
+    //todo parasyti prisijungiant info papildomos (highscore etc.)
 
     public void initializeGame() {
+        createUser();
+        enterMainMenu();
+    }
 
 
+
+
+
+
+
+    private void createUser() {
         System.out.println("Įveskite savo vardą:");
         String userName = SCANNER.nextLine();
         User user = userService.createUser(userName);
         System.out.println("Sveiki, " + user.getName() + "!");
-
-//todo ivedant varda, tikrinti, ar toks useris jau egzistuoja
-        //todo pasidaryt db, kuri neisnyktu aplikacijai issijungus - tikrinsime, ar toks useris egzistuoja
-        //todo parasyti prisijungiant info papildomos (highscore etc.)
-
-        while (true) {
-            //todo kiek klausimu nori, kad paklaustu (begalybe klausimu)
-            //todo padaryti per laika
-            //todo padaryti, kad zaidi, kol suklysi
-            System.out.println("Ar norite pradėti naują žaidimą?");
-            System.out.println("y/n");
-            String userAnswer = SCANNER.nextLine();
-            if (userAnswer.equalsIgnoreCase("y")) {
-                System.out.println("Pasirinkite žaidimo tipą:");
-                System.out.println("I - infinite " + "|" + "T - time " + "|" + "P - perfect");
-                String mode = SCANNER.nextLine();
-                switch (mode) {
-                    case "i":
-                        startInifinityGame();
-                        break;
-                    case "t":
-                        startTimeGame();
-                        break;
-                    case "p":
-                        startPerfectGame();
-                        break;
-                }
-            } else if (userAnswer.equalsIgnoreCase("n")) {
-                System.out.println("Iki!");
-                break;
-            } else {
-                System.out.println("Spauskite y, jei norite tęsti. Jei norite baigti žaidimą, spauskite n");
-            }
-        }
     }
 
     //todo kiekvienam skirtingam modui tureti atskira metoda - arba tureti viena metoda su parametrais
 
     //todo sugalvot veikiancia validacija, while true loopai pvz.
+
+
+    private static void enterMainMenu() {
+        System.out.println("Pasirinkite žaidimo tipą:");
+        System.out.println("I - infinite " + "|" + "T - time " + "|" + "P - perfect");
+        String mode = SCANNER.nextLine();
+        switch (mode) {
+            case "i":
+                startInifinityGame();
+                break;
+            case "t":
+                startTimeGame();
+                break;
+            case "p":
+                startPerfectGame();
+                break;
+        }
+    }
     public static void startInifinityGame() {
         System.out.println("Įrašykite, kiek klausimų norite atsakyti. Jei norite begalybės klausimų, įveskite b:");
         String answer = SCANNER.nextLine();
@@ -76,11 +72,13 @@ public class App {
             answer = SCANNER.nextLine();
         }
 
+
         if (answer.equalsIgnoreCase("b")) {
             while (true) {
                 //todo kaip iseiti is loopo
                 baseGame();
-            }
+                }
+
         } else {
             for (int i = 0; i < Integer.parseInt(answer); i++) {
                 baseGame();
@@ -96,7 +94,7 @@ public class App {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("Įrašykite normalų skaičių!");
+            System.out.println("Įrašykite normalų skaičių arba b!");
             return false;
         }
         return true;
@@ -163,15 +161,22 @@ public class App {
         int a = random.nextInt(11);
         int b = random.nextInt(11);
 
+
+
         System.out.println(a + " + " + b + " = ?");
-        int userAnswer = SCANNER.nextInt();
-        SCANNER.nextLine();
-        if (userAnswer == a + b) {
+        String userAnswer = SCANNER.nextLine();
+
+        if (Integer.parseInt(userAnswer) == a + b) {
             System.out.println("Teisingai!");
             score += 10;
-        } else {
+        }
+         if(userAnswer.equalsIgnoreCase("999"))  {
+            System.out.println("Surinkti taškai: " + score);
+            enterMainMenu();
+        }  else {
             System.out.println("Neteisingai... :(");
         }
+
     }
 }
 
