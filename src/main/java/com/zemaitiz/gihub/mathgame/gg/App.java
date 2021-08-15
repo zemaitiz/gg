@@ -53,6 +53,7 @@ public class App {
         return true;
     }
 
+
     //todo kiekvienam skirtingam modui tureti atskira metoda - arba tureti viena metoda su parametrais
 
     //todo sugalvot veikiancia validacija, while true loopai pvz.
@@ -66,15 +67,9 @@ public class App {
             mode = SCANNER.nextLine();
         }
         switch (mode) {
-            case "i":
-                startInifinityGame();
-                break;
-            case "t":
-                startTimeGame();
-                break;
-            case "p":
-                startPerfectGame();
-                break;
+            case "i" -> startInifinityGame();
+            case "t" -> startTimeGame();
+            case "p" -> startPerfectGame();
         }
     }
 
@@ -92,12 +87,7 @@ public class App {
 
 
     public static void startInifinityGame() {
-        System.out.println("Pasirinkite sunkumo lygį.");
-        System.out.println("E - easy |" + "M-medium |" + "H- hard");
-        String difficultyAnswer = SCANNER.nextLine();
-        while (!isDifficultyAnswerValid(difficultyAnswer)) {
-            difficultyAnswer = SCANNER.nextLine();
-        }
+        String difficultyAnswer = getDifficultyAnswer();
         System.out.println("Įrašykite, kiek klausimų norite atsakyti. Jei norite begalybės klausimų, įveskite b:");
         String answer = SCANNER.nextLine();
         while (!isInputValid(answer)) {
@@ -108,15 +98,25 @@ public class App {
         if (answer.equalsIgnoreCase("b")) {
             System.out.println("Norėdami baigti žaidimą ir grįžti į pagrindinį meniu, įveskite end");
             while (true) {
-                baseGame(difficultyAnswer);
+                rootGame(difficultyAnswer);
             }
 
         } else {
             for (int i = 0; i < Integer.parseInt(answer); i++) {
-                baseGame(difficultyAnswer);
+                rootGame(difficultyAnswer);
             }
         }
         System.out.println("Jūsų surinkti taškai: " + score);
+    }
+
+    private static String getDifficultyAnswer() {
+        System.out.println("Pasirinkite sunkumo lygį.");
+        System.out.println("E - easy |" + "M-medium |" + "H- hard");
+        String difficultyAnswer = SCANNER.nextLine();
+        while (!isDifficultyAnswerValid(difficultyAnswer)) {
+            difficultyAnswer = SCANNER.nextLine();
+        }
+        return difficultyAnswer;
     }
 
     private static boolean isDifficultyAnswerValid(String difficultyAnswer) {
@@ -133,16 +133,9 @@ public class App {
 
     private static boolean isInputValid(String answer) {
         try {
-            if (!answer.equalsIgnoreCase("b")) {
+            if (!answer.equalsIgnoreCase("b") && Integer.parseInt(answer, 29) <= 0 ) {
                 throw new IllegalArgumentException();
             }
-
-            int parsedAnswer = Integer.parseInt(answer, 29);
-
-            if (parsedAnswer <= 0) {
-                throw new IllegalArgumentException();
-            }
-
         } catch (IllegalArgumentException e) {
             System.out.println("Įrašykite normalų skaičių arba b!");
             return false;
@@ -205,24 +198,15 @@ public class App {
         }
     }
 
-
-    public static void baseGame(String difficultyAnswer) {
+    private static void rootGame(String difficulty) {
         Random random = new Random();
-        int maxNumber = 0;
+        int maxNumber = switch (difficulty) {
+            case "e" -> 11;
+            case "m" -> 101;
+            case "h" -> 1001;
+            default -> 0;
+        };
 
-        switch (difficultyAnswer) {
-            case "e":
-                maxNumber = 11;
-                break;
-            case "m":
-                maxNumber = 101;
-                break;
-            case "h":
-                maxNumber = 1001;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + difficultyAnswer);
-        }
         int a = random.nextInt(maxNumber);
         int b = random.nextInt(maxNumber);
 
@@ -237,7 +221,8 @@ public class App {
             }
             if (userAnswer.isEmpty()) {
                 throw new NumberFormatException();
-            } if (Integer.parseInt(userAnswer) == a + b) {
+            }
+            if (Integer.parseInt(userAnswer) == a + b) {
                 System.out.println("Teisingai!");
                 score += 10;
             } else {
@@ -246,7 +231,6 @@ public class App {
         } catch (NumberFormatException e) {
             System.out.println("Ar tikrai įvedėte atsakymą?");
         }
-
     }
 }
 
