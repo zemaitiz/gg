@@ -26,6 +26,8 @@ public class App {
     //todo parasyti prisijungiant info papildomos (highscore etc.)
 
     public void initializeGame() {
+
+        //todo properciu klaseje metodas pvz. setUser;
         createUser();
         enterMainMenu();
     }

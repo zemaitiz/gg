@@ -19,3 +19,8 @@ public class GgApplication implements CommandLineRunner {
 		app.initializeGame();
 	}
 }
+
+//todo tureti klase pvz. GameProperties su fieldais difficulty, mode etc.
+//todo klase, atsakinga uz teksto spausdinima (validatoriaus klase)
+//todo klase zaidimo, uzduociu generavimo klase (SmthGenerator), kiekviena klase atsakinga uz viena dalyka
+//todo kada kuria klase kviesti (klase gali but @Component)
